@@ -34,7 +34,7 @@ export default function AppLayout() {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [messages, setMessages] = useState([
-    { text: `Салам! Я твой HQ-бот. Готов прокачаться сегодня?`, isBot: true }
+    { text: `Салам! Я твой HQ-бот. Готов стать лучше?`, isBot: true }
   ]);
 
   const handleLogout = () => { logout(); navigate('/login'); };
