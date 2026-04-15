@@ -23,7 +23,7 @@ const allowedOrigins = [
   'http://localhost:3000',
   'http://127.0.0.1:3000',
 ];
-const cors = require('cors');
+
 
 // Разрешаем все запросы и все заголовки
 app.use(cors({
