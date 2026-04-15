@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { motion } from 'framer-motion';
 import { rewardsAPI } from '../services/api';
 import { useAuth } from '../hooks/useAuth';
 import { PageHeader, Modal, Spinner, EmptyState } from '../components/ui';
 import { AnimatedPage } from '../components/layout/AnimatedPage';
-import { ShoppingBag, History, Zap, Package } from 'lucide-react';
+import { ShoppingBag, History, Zap } from 'lucide-react';
 
 const CATEGORY_ICONS = { digital: '💻', merchandise: '🎁', general: '⭐' };
+const API_URL = 'https://habitquest-fhyd.onrender.com'; // ТВОЙ БЭКЕНД
 
 export default function ShopPage() {
   const { t } = useTranslation();
@@ -58,35 +60,30 @@ export default function ShopPage() {
           title={t('rewardShop')}
           subtitle={`You have ${user?.xp || 0} XP to spend`}
           action={
-            <div className="flex items-center gap-3 bg-gradient-to-r from-yellow-400 to-orange-500 px-6 py-3 rounded-2xl shadow-lg shadow-orange-500/20">
-              <Zap className="text-white fill-white" size={24} />
-              <div className="text-white">
+            <motion.div whileHover={{ scale: 1.05 }} className="flex items-center gap-3 bg-gradient-to-r from-yellow-400 to-orange-500 px-6 py-3 rounded-2xl shadow-lg shadow-orange-500/20 text-white">
+              <Zap className="fill-white" size={24} />
+              <div>
                 <p className="font-display font-black text-xl leading-none">{user?.xp || 0}</p>
-                <p className="text-[10px] uppercase tracking-wider opacity-80">Your Balance</p>
+                <p className="text-[10px] uppercase tracking-wider opacity-80 font-bold">Balance</p>
               </div>
-            </div>
+            </motion.div>
           }
         />
 
-        {/* Плавные табы */}
         <div className="flex gap-2 p-1.5 bg-slate-100 dark:bg-slate-800/50 rounded-2xl w-full sm:w-fit">
-          <button onClick={() => setTab('shop')}
-            className={`flex-1 sm:flex-none flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-sm font-bold transition-all duration-300
-              ${tab === 'shop' ? 'bg-white dark:bg-slate-700 text-brand-600 shadow-md scale-100' : 'text-slate-500 hover:bg-white/50 dark:hover:bg-slate-700/50'}`}>
-            <ShoppingBag size={18} /> {t('rewardShop')}
-          </button>
-          <button onClick={() => setTab('purchases')}
-            className={`flex-1 sm:flex-none flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-sm font-bold transition-all duration-300
-              ${tab === 'purchases' ? 'bg-white dark:bg-slate-700 text-brand-600 shadow-md scale-100' : 'text-slate-500 hover:bg-white/50 dark:hover:bg-slate-700/50'}`}>
-            <History size={18} /> {t('purchaseHistory')}
-          </button>
+          {['shop', 'purchases'].map((id) => (
+            <button key={id} onClick={() => setTab(id)}
+              className={`flex-1 sm:flex-none flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-sm font-bold transition-all duration-300
+                ${tab === id ? 'bg-white dark:bg-slate-700 text-brand-600 shadow-md scale-100' : 'text-slate-500 hover:bg-white/50'}`}>
+              {id === 'shop' ? <ShoppingBag size={18} /> : <History size={18} />} {id === 'shop' ? t('rewardShop') : t('purchaseHistory')}
+            </button>
+          ))}
         </div>
 
         {loading ? (
           <div className="flex justify-center py-20"><Spinner size="lg" /></div>
         ) : tab === 'shop' ? (
           <div className="space-y-6">
-            {/* Фильтры как в модных приложениях */}
             <div className="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
               {categories.map(c => (
                 <button key={c} onClick={() => setFilterCat(c)}
@@ -97,100 +94,81 @@ export default function ShopPage() {
               ))}
             </div>
 
-            {/* Сетка товаров с крутыми карточками */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {filtered.map(reward => {
+              {filtered.map((reward, index) => {
                 const affordable = canAfford(reward.xp_cost);
-                return (
-                  <div key={reward.id} 
-                    className={`group bg-white dark:bg-slate-800 rounded-[2.5rem] p-4 shadow-sm border-2 border-transparent transition-all duration-300 hover:border-brand-500/20 hover:shadow-2xl hover:-translate-y-2 active:scale-95 ${!affordable ? 'opacity-80' : ''}`}>
-                    
-                    <div className="relative h-48 rounded-[2rem] overflow-hidden mb-4 bg-slate-100 dark:bg-slate-900">
-                      <img src={reward.image} alt={reward.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
-                      <div className="absolute top-3 left-3 bg-white/90 dark:bg-black/50 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest">
-                        {reward.category}
-                      </div>
-                    </div>
+                // ЧИНИМ КАРТИНКУ:
+                const fullImgUrl = reward.image.startsWith('http') ? reward.image : `${API_URL}${reward.image}`;
 
+                return (
+                  <motion.div 
+                    key={reward.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.05 }}
+                    className={`group bg-white dark:bg-slate-800 rounded-[2.5rem] p-4 shadow-sm border-2 border-transparent transition-all duration-300 hover:border-brand-500/20 hover:shadow-2xl hover:-translate-y-2 active:scale-95 ${!affordable ? 'opacity-80' : ''}`}
+                  >
+                    <div className="relative h-48 rounded-[2rem] overflow-hidden mb-4 bg-slate-100 dark:bg-slate-900">
+                      <img src={fullImgUrl} alt={reward.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                    </div>
                     <div className="px-2 space-y-1">
                       <h3 className="font-display font-bold text-slate-900 dark:text-white text-lg">{reward.name}</h3>
                       <p className="text-xs text-slate-400 line-clamp-2 h-8">{reward.description}</p>
-                      
                       <div className="flex items-center justify-between pt-4">
-                        <div className="flex items-center gap-1.5">
-                          <div className="w-8 h-8 rounded-full bg-yellow-100 dark:bg-yellow-900/30 flex items-center justify-center">
-                            <Zap size={14} className="text-yellow-600 fill-yellow-600" />
-                          </div>
-                          <span className="font-black text-brand-600 dark:text-brand-400 text-lg">{reward.xp_cost}</span>
-                        </div>
-                        
-                        <button
-                          onClick={() => affordable && setConfirmReward(reward)}
-                          disabled={!affordable}
-                          className={`px-6 py-3 rounded-2xl text-xs font-black uppercase tracking-tighter transition-all
-                            ${affordable ? 'bg-brand-500 hover:bg-brand-600 text-white shadow-lg shadow-brand-500/25' : 'bg-slate-100 dark:bg-slate-900 text-slate-400 cursor-not-allowed'}`}
-                        >
-                          {affordable ? 'Get Reward' : 'Locked'}
+                        <span className="font-black text-brand-600 dark:text-brand-400 text-lg">{reward.xp_cost} XP</span>
+                        <button onClick={() => affordable && setConfirmReward(reward)} disabled={!affordable}
+                          className={`px-6 py-3 rounded-2xl text-xs font-black uppercase transition-all
+                            ${affordable ? 'bg-brand-500 hover:bg-brand-600 text-white shadow-lg' : 'bg-slate-100 text-slate-400 cursor-not-allowed'}`}>
+                          {affordable ? t('purchase') : 'Locked'}
                         </button>
                       </div>
                     </div>
-                  </div>
+                  </motion.div>
                 );
               })}
             </div>
           </div>
         ) : (
-          /* История покупок */
+          /* ИСТОРИЯ ПОКУПОК */
           <div className="space-y-4">
-            {purchases.length === 0 ? (
-              <EmptyState icon="📦" title="No rewards yet" subtitle="Earn XP and start your collection!" />
-            ) : (
-              purchases.map(p => (
-                <div key={p.id} className="bg-white dark:bg-slate-800 p-4 rounded-[2rem] flex items-center gap-4 shadow-sm border border-slate-100 dark:border-slate-700/50">
-                  <div className="w-16 h-16 rounded-2xl overflow-hidden bg-slate-100 flex-shrink-0">
-                    <img src={p.reward?.image} alt="" className="w-full h-full object-cover" />
-                  </div>
-                  <div className="flex-1">
-                    <h4 className="font-bold text-slate-900 dark:text-white">{p.reward?.name}</h4>
-                    <p className="text-xs text-slate-400 font-medium">{new Date(p.createdAt).toLocaleDateString()}</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-brand-600 font-black">-{p.xp_spent} XP</p>
-                    <span className="text-[10px] uppercase font-black bg-green-100 text-green-600 px-3 py-1 rounded-full">{p.status}</span>
-                  </div>
+            {purchases.map((p, index) => (
+              <motion.div 
+                key={p.id}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: index * 0.05 }}
+                className="bg-white dark:bg-slate-800 p-4 rounded-[2rem] flex items-center gap-4 shadow-sm"
+              >
+                <div className="w-16 h-16 rounded-2xl overflow-hidden bg-slate-100">
+                  <img src={p.reward?.image.startsWith('http') ? p.reward.image : `${API_URL}${p.reward.image}`} alt="" className="w-full h-full object-cover" />
                 </div>
-              ))
-            )}
+                <div className="flex-1 text-sm font-bold">{p.reward?.name}</div>
+                <div className="text-right text-brand-600 font-black">-{p.xp_spent} XP</div>
+              </motion.div>
+            ))}
           </div>
         )}
 
-        {/* Красивая модалка */}
         <Modal open={!!confirmReward} onClose={() => setConfirmReward(null)} title="Confirm Purchase">
           {confirmReward && (
-            <div className="space-y-6">
-              <div className="p-6 bg-slate-50 dark:bg-slate-900/50 rounded-[2.5rem] border-2 border-dashed border-slate-200 dark:border-slate-700 text-center">
-                <img src={confirmReward.image} alt="" className="w-32 h-32 rounded-3xl object-cover mx-auto mb-4 shadow-2xl" />
-                <h3 className="font-display font-black text-2xl text-slate-900 dark:text-white">{confirmReward.name}</h3>
-                <div className="flex justify-center items-center gap-2 mt-2">
-                   <Zap size={20} className="text-yellow-500 fill-yellow-500" />
-                   <span className="text-2xl font-black text-brand-600">{confirmReward.xp_cost} XP</span>
-                </div>
-              </div>
+            <div className="space-y-6 text-center">
+              <img src={confirmReward.image.startsWith('http') ? confirmReward.image : `${API_URL}${confirmReward.image}`} alt="" className="w-32 h-32 rounded-3xl object-cover mx-auto mb-4 shadow-2xl" />
+              <h3 className="font-display font-black text-2xl text-slate-900 dark:text-white">{confirmReward.name}</h3>
+              <p className="text-2xl font-black text-brand-600">{confirmReward.xp_cost} XP</p>
               <div className="flex gap-4">
-                <button onClick={() => setConfirmReward(null)} className="flex-1 py-4 rounded-2xl font-bold bg-slate-100 text-slate-600 hover:bg-slate-200 transition-all">Cancel</button>
-                <button onClick={handlePurchase} disabled={!!buying} className="flex-1 py-4 rounded-2xl font-bold bg-brand-500 text-white shadow-xl shadow-brand-500/30 hover:bg-brand-600 active:scale-95 transition-all">
-                  {buying ? 'Processing...' : 'Confirm'}
+                <button onClick={() => setConfirmReward(null)} className="flex-1 py-4 rounded-2xl font-bold bg-slate-100">Cancel</button>
+                <button onClick={handlePurchase} disabled={!!buying} className="flex-1 py-4 rounded-2xl font-bold bg-brand-500 text-white shadow-xl shadow-brand-500/30">
+                  {buying ? '...' : 'Buy'}
                 </button>
               </div>
             </div>
           )}
         </Modal>
 
-        {/* Сочные уведомления (Toast) */}
         {toast && (
-          <div className={`fixed bottom-10 left-1/2 -translate-x-1/2 z-[200] ${toast.type === 'success' ? 'bg-slate-900' : 'bg-red-600'} text-white px-8 py-4 rounded-3xl shadow-2xl animate-bounce-short flex items-center gap-4 border border-white/10`}>
-            <span className="font-bold">{toast.msg}</span>
-          </div>
+          <motion.div initial={{ y: 50, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className={`fixed bottom-10 left-1/2 -translate-x-1/2 z-[200] ${toast.type === 'success' ? 'bg-slate-900' : 'bg-red-600'} text-white px-8 py-4 rounded-3xl shadow-2xl font-bold`}>
+            {toast.msg}
+          </motion.div>
         )}
       </div>
     </AnimatedPage>

@@ -70,6 +70,14 @@ export default function StatisticsPage() {
           </ResponsiveContainer>
         </div>
 
+        <Bar 
+  dataKey="xp" 
+  isAnimationActive={true} // ВКЛЮЧАЕТ АНИМАЦИЮ
+  animationDuration={1500} 
+  fill="#6366f1" 
+  radius={[10, 10, 0, 0]} 
+/>
+
         {/* Pie chart */}
         <div className="card p-5">
           <h3 className="font-display font-semibold text-slate-900 dark:text-white mb-4">Weekly Rate</h3>

@@ -1,4 +1,5 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { AnimatePresence } from 'framer-motion';
 import { AuthProvider, useAuth } from './hooks/useAuth';
 import { useTheme } from './hooks/useTheme';
 import AppLayout from './components/layout/AppLayout';
@@ -32,24 +33,29 @@ const PublicRoute = ({ children }) => {
   return user ? <Navigate to="/" replace /> : children;
 };
 
-function AppRoutes() {
-  useTheme(); // Initialize theme
+// ВЫНЕСЛИ РОУТЫ В ОТДЕЛЬНЫЙ КОМПОНЕНТ ДЛЯ АНИМАЦИИ
+function AnimatedRoutes() {
+  const location = useLocation();
+  useTheme(); 
+
   return (
-    <Routes>
-      <Route path="/login" element={<PublicRoute><LoginPage /></PublicRoute>} />
-      <Route path="/register" element={<PublicRoute><RegisterPage /></PublicRoute>} />
-      <Route path="/" element={<PrivateRoute><AppLayout /></PrivateRoute>}>
-        <Route index element={<DashboardPage />} />
-        <Route path="habits" element={<HabitsPage />} />
-        <Route path="calendar" element={<CalendarPage />} />
-        <Route path="statistics" element={<StatisticsPage />} />
-        <Route path="shop" element={<ShopPage />} />
-        <Route path="friends" element={<FriendsPage />} />
-        <Route path="leaderboard" element={<LeaderboardPage />} />
-        <Route path="profile" element={<ProfilePage />} />
-      </Route>
-      <Route path="*" element={<Navigate to="/" replace />} />
-    </Routes>
+    <AnimatePresence mode="wait">
+      <Routes location={location} key={location.pathname}>
+        <Route path="/login" element={<PublicRoute><LoginPage /></PublicRoute>} />
+        <Route path="/register" element={<PublicRoute><RegisterPage /></PublicRoute>} />
+        <Route path="/" element={<PrivateRoute><AppLayout /></PrivateRoute>}>
+          <Route index element={<DashboardPage />} />
+          <Route path="habits" element={<HabitsPage />} />
+          <Route path="calendar" element={<CalendarPage />} />
+          <Route path="statistics" element={<StatisticsPage />} />
+          <Route path="shop" element={<ShopPage />} />
+          <Route path="friends" element={<FriendsPage />} />
+          <Route path="leaderboard" element={<LeaderboardPage />} />
+          <Route path="profile" element={<ProfilePage />} />
+        </Route>
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </AnimatePresence>
   );
 }
 
@@ -57,7 +63,7 @@ export default function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
-        <AppRoutes />
+        <AnimatedRoutes />
       </BrowserRouter>
     </AuthProvider>
   );
