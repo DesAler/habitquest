@@ -59,7 +59,7 @@ export default function AppLayout() {
       // Берем текущий язык сайта из локального хранилища (или ставим 'ru' по умолчанию)
       const currentLang = localStorage.getItem('hq_language') || 'ru'; 
 
-      const res = await fetch('http://localhost:5000/api/ai/chat', {
+      const res = await fetch('https://habitquest-fhyd.onrender.com', {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
