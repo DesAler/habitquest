@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'https://habitquest-fhyd.onrender.com',
+  baseURL: 'https://habitquest-fhyd.onrender.com/api',
   timeout: 15000,
 });
 
