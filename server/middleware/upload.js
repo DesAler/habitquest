@@ -1,33 +1,37 @@
 const multer = require('multer');
-const path = require('path');
-const fs = require('fs');
+const cloudinary = require('cloudinary').v2;
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
 
-const ensureDir = (dir) => {
-  if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-};
+// 1. Настройка доступа к Cloudinary
+// Вставь свои данные из Dashboard Cloudinary
+cloudinary.config({
+  cloud_name: 'dbg2dkc3g',
+  api_key: '662292873725755',
+  api_secret: 'aQlhdIAsr0_dITQHLCKYWXbHoZw'
+});
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    const uploadPath = path.join(__dirname, '../uploads');
-    ensureDir(uploadPath);
-    cb(null, uploadPath);
-  },
-  filename: (req, file, cb) => {
-    const unique = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
-    cb(null, `${unique}${path.extname(file.originalname)}`);
+// 2. Настройка облачного хранилища
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'habitquest_uploads', // папка, которая создастся в облаке
+    allowed_formats: ['jpg', 'png', 'jpeg', 'gif', 'webp'],
+    transformation: [{ width: 800, height: 800, crop: 'limit' }] // оптимизация картинки
   },
 });
 
+// 3. Фильтр файлов (оставляем твой, он хороший)
 const fileFilter = (req, file, cb) => {
   const allowedTypes = /jpeg|jpg|png|gif|webp/;
-  const isValid = allowedTypes.test(path.extname(file.originalname).toLowerCase())
-    && allowedTypes.test(file.mimetype);
-  if (isValid) cb(null, true);
-  else cb(new Error('Only image files are allowed'), false);
+  if (allowedTypes.test(file.mimetype)) {
+    cb(null, true);
+  } else {
+    cb(new Error('Only image files are allowed'), false);
+  }
 };
 
 const upload = multer({
-  storage,
+  storage: storage,
   limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
   fileFilter,
 });

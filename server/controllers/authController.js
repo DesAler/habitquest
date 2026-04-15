@@ -46,7 +46,6 @@ const login = async (req, res) => {
     if (!email || !password)
       return res.status(400).json({ error: 'Email and password are required' });
 
-    // FIX: case-insensitive email lookup
     const user = await User.findOne({ where: { email: email.toLowerCase().trim() } });
     if (!user) return res.status(401).json({ error: 'Invalid credentials' });
 
@@ -72,18 +71,29 @@ const getMe = async (req, res) => {
   }
 };
 
+// --- ОБНОВЛЕННАЯ ФУНКЦИЯ ДЛЯ CLOUDINARY ---
 const updateProfile = async (req, res) => {
   try {
     const { username, bio, language, timezone } = req.body;
     const updateData = {};
+    
     if (username) updateData.username = username.trim();
     if (bio !== undefined) updateData.bio = bio;
     if (language) updateData.language = language;
     if (timezone) updateData.timezone = timezone;
-    if (req.file) updateData.avatar = `/uploads/${req.file.filename}`;
+    
+    // Если пришел файл, сохраняем ссылку из Cloudinary
+    if (req.file && req.file.path) {
+      // req.file.path теперь содержит полную ссылку https://res.cloudinary.com/...
+      updateData.avatar = req.file.path;
+    }
 
     await User.update(updateData, { where: { id: req.user.id } });
-    const updatedUser = await User.findByPk(req.user.id, { attributes: { exclude: ['password'] } });
+    
+    const updatedUser = await User.findByPk(req.user.id, { 
+      attributes: { exclude: ['password'] } 
+    });
+    
     res.json({ message: 'Profile updated', user: updatedUser });
   } catch (error) {
     console.error('Update profile error:', error);
