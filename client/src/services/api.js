@@ -1,7 +1,13 @@
 import axios from 'axios';
 
+// АВТО-ОПРЕДЕЛЕНИЕ СЕРВЕРА
+const isLocal = window.location.hostname === 'localhost';
+const API_URL = isLocal 
+  ? 'http://localhost:5000/api' 
+  : 'https://habitquest-fhyd.onrender.com/api';
+
 const api = axios.create({
-  baseURL: 'https://habitquest-fhyd.onrender.com/api',
+  baseURL: API_URL, 
   timeout: 15000,
 });
 

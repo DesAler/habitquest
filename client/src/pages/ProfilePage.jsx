@@ -1,26 +1,34 @@
-import { useState, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { authAPI } from '../services/api';
 import { useAuth } from '../hooks/useAuth';
 import { PageHeader, XPProgressBar, Avatar } from '../components/ui';
 import i18n from '../i18n';
 
-const LEVEL_TITLES = ['Novice','Apprentice','Explorer','Seeker','Achiever','Champion','Master','Grand Master','Legend','Mythic'];
-const LANGUAGES = [{ code: 'en', label: 'English', flag: '🇬🇧' }, { code: 'ru', label: 'Русский', flag: '🇷🇺' }, { code: 'kk', label: 'Қазақша', flag: '🇰🇿' }];
-
 export default function ProfilePage() {
   const { t } = useTranslation();
   const { user, refreshUser } = useAuth();
   const fileRef = useRef();
   const [editing, setEditing] = useState(false);
-  const [form, setForm] = useState({ username: user?.username || '', bio: user?.bio || '', language: user?.language || 'en' });
+  const [form, setForm] = useState({ 
+    username: user?.username || '', 
+    bio: user?.bio || '', 
+    language: user?.language || 'en' 
+  });
   const [pwForm, setPwForm] = useState({ currentPassword: '', newPassword: '' });
   const [avatarFile, setAvatarFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [pwLoading, setPwLoading] = useState(false);
   const [toast, setToast] = useState(null);
 
-  const levelTitle = LEVEL_TITLES[Math.min((user?.level || 1) - 1, LEVEL_TITLES.length - 1)];
+  const LEVEL_KEYS = ['novice','apprentice','explorer','seeker','achiever','champion','master','grandMaster','legend','mythic'];
+  const LANGUAGES = [
+    { code: 'en', label: 'English', flag: '🇬🇧' }, 
+    { code: 'ru', label: 'Русский', flag: '🇷🇺' }, 
+    { code: 'kk', label: 'Қазақша', flag: '🇰🇿' }
+  ];
+
+  const levelKey = LEVEL_KEYS[Math.min((user?.level || 1) - 1, LEVEL_KEYS.length - 1)];
 
   const showToast = (msg, type = 'success') => {
     setToast({ msg, type });
@@ -35,17 +43,20 @@ export default function ProfilePage() {
       fd.append('bio', form.bio);
       fd.append('language', form.language);
       if (avatarFile) fd.append('avatar', avatarFile);
+      
       await authAPI.updateProfile(fd);
+      
       if (form.language !== i18n.language) {
         i18n.changeLanguage(form.language);
         localStorage.setItem('hq_language', form.language);
       }
+      
       await refreshUser();
       setEditing(false);
       setAvatarFile(null);
-      showToast('Profile updated!');
+      showToast(t('profile_page.successUpdate'));
     } catch (e) {
-      showToast(e.response?.data?.error || 'Update failed', 'error');
+      showToast(e.response?.data?.error || t('profile_page.errorUpdate'), 'error');
     } finally { setLoading(false); }
   };
 
@@ -55,9 +66,9 @@ export default function ProfilePage() {
     try {
       await authAPI.changePassword(pwForm);
       setPwForm({ currentPassword: '', newPassword: '' });
-      showToast('Password changed successfully!');
+      showToast(t('profile_page.successPassword'));
     } catch (e) {
-      showToast(e.response?.data?.error || 'Failed to change password', 'error');
+      showToast(e.response?.data?.error || t('profile_page.errorPassword'), 'error');
     } finally { setPwLoading(false); }
   };
 
@@ -68,7 +79,6 @@ export default function ProfilePage() {
       {/* Profile card */}
       <div className="card p-6">
         <div className="flex items-start gap-5">
-          {/* Avatar */}
           <div className="relative flex-shrink-0">
             <Avatar user={avatarFile ? { ...user, avatar: null, username: user?.username } : user} size="xl" />
             {avatarFile && (
@@ -88,7 +98,6 @@ export default function ProfilePage() {
             )}
           </div>
 
-          {/* Info */}
           <div className="flex-1 min-w-0">
             {editing ? (
               <div className="space-y-3">
@@ -98,7 +107,7 @@ export default function ProfilePage() {
                 </div>
                 <div>
                   <label className="label">{t('bio')}</label>
-                  <textarea className="input resize-none" rows={2} value={form.bio} onChange={e => setForm(f => ({ ...f, bio: e.target.value }))} placeholder="Tell others about yourself..." />
+                  <textarea className="input resize-none" rows={2} value={form.bio} onChange={e => setForm(f => ({ ...f, bio: e.target.value }))} placeholder={t('profile_page.bioPlaceholder')} />
                 </div>
                 <div>
                   <label className="label">{t('language')}</label>
@@ -116,10 +125,12 @@ export default function ProfilePage() {
             ) : (
               <>
                 <h2 className="font-display font-bold text-xl text-slate-900 dark:text-white">{user?.username}</h2>
-                <p className="text-brand-500 font-medium text-sm">{levelTitle} • Level {user?.level}</p>
+                <p className="text-brand-500 font-medium text-sm">
+                  {t(`dashboard_page.levels.${levelKey}`)} • {t('level')} {user?.level}
+                </p>
                 {user?.bio && <p className="text-slate-500 dark:text-slate-400 text-sm mt-2">{user.bio}</p>}
                 <p className="text-xs text-slate-400 mt-2">📧 {user?.email}</p>
-                <button onClick={() => setEditing(true)} className="btn-secondary mt-3 text-sm py-1.5">
+                <button onClick={() => setEditing(true)} className="btn-secondary mt-3 text-sm py-1.5 flex items-center gap-2">
                   ✏️ {t('editProfile')}
                 </button>
               </>
@@ -130,14 +141,14 @@ export default function ProfilePage() {
 
       {/* XP / Level */}
       <div className="card p-6">
-        <h3 className="font-display font-semibold text-slate-900 dark:text-white mb-4">⚡ Experience & Level</h3>
+        <h3 className="font-display font-semibold text-slate-900 dark:text-white mb-4">⚡ {t('profile_page.experienceLevel')}</h3>
         <div className="flex items-center gap-4 mb-4">
           <div className="w-16 h-16 bg-gradient-to-br from-brand-500 to-brand-700 rounded-2xl flex items-center justify-center text-white font-display font-black text-2xl">
             {user?.level}
           </div>
           <div className="flex-1">
-            <h4 className="font-semibold text-slate-900 dark:text-white">{levelTitle}</h4>
-            <p className="text-sm text-slate-500 dark:text-slate-400">{user?.xp} XP total</p>
+            <h4 className="font-semibold text-slate-900 dark:text-white">{t(`dashboard_page.levels.${levelKey}`)}</h4>
+            <p className="text-sm text-slate-500 dark:text-slate-400">{user?.xp} {t('profile_page.totalXp')}</p>
           </div>
         </div>
         <XPProgressBar xp={user?.xp || 0} level={user?.level || 1} />

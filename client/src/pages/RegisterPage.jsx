@@ -18,12 +18,13 @@ export default function RegisterPage() {
       await register(form.email, form.username, form.password);
       navigate('/');
     } catch (err) {
-      setError(err.response?.data?.error || 'Registration failed');
+      setError(err.response?.data?.error || t('auth_page.errorReg'));
     } finally { setLoading(false); }
   };
 
   return (
     <div className="min-h-screen flex dark:bg-slate-950">
+      {/* Левая часть (Рекламная) */}
       <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-brand-600 via-brand-500 to-brand-700 flex-col justify-between p-12 relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           {[...Array(6)].map((_, i) => (
@@ -36,14 +37,18 @@ export default function RegisterPage() {
           <span className="text-white font-display font-bold text-2xl">HabitQuest</span>
         </div>
         <div className="relative">
-          <h2 className="text-white font-display font-bold text-4xl leading-tight mb-4">Your journey starts here.</h2>
-          <p className="text-white/70 text-lg">Join thousands of users building life-changing habits every day.</p>
+          <h2 className="text-white font-display font-bold text-4xl leading-tight mb-4">
+            {t('auth_page.journeyTitle')}
+          </h2>
+          <p className="text-white/70 text-lg">
+            {t('auth_page.journeySub')}
+          </p>
           <div className="grid grid-cols-2 gap-3 mt-8">
             {[
-              { icon: '🔥', label: 'Streak tracking' },
-              { icon: '📊', label: 'Progress stats' },
-              { icon: '🏆', label: 'Leaderboard' },
-              { icon: '🌍', label: '3 languages' },
+              { icon: '🔥', label: t('auth_page.features.streaks') },
+              { icon: '📊', label: t('auth_page.features.stats') },
+              { icon: '🏆', label: t('auth_page.features.leaderboard') },
+              { icon: '🌍', label: t('auth_page.features.languages') },
             ].map(f => (
               <div key={f.label} className="bg-white/10 rounded-xl p-3 text-white text-sm flex items-center gap-2">
                 <span>{f.icon}</span><span>{f.label}</span>
@@ -51,9 +56,10 @@ export default function RegisterPage() {
             ))}
           </div>
         </div>
-        <div className="relative text-white/50 text-sm">© 2025 HabitQuest</div>
+        <div className="relative text-white/50 text-sm">© 2026 HabitQuest</div>
       </div>
 
+      {/* Правая часть (Форма) */}
       <div className="flex-1 flex items-center justify-center p-6">
         <div className="w-full max-w-sm">
           <div className="lg:hidden flex items-center gap-3 mb-8">
@@ -85,7 +91,7 @@ export default function RegisterPage() {
               <label className="label">{t('password')}</label>
               <input type="password" className="input" placeholder="••••••••"
                 value={form.password} onChange={e => setForm(f => ({ ...f, password: e.target.value }))} required minLength={6} />
-              <p className="text-xs text-slate-400 mt-1">Minimum 6 characters</p>
+              <p className="text-xs text-slate-400 mt-1">{t('auth_page.passHint')}</p>
             </div>
             <button type="submit" disabled={loading} className="btn-primary w-full py-3 text-base mt-2">
               {loading ? '...' : t('signUp')}

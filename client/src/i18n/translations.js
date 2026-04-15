@@ -1,9 +1,7 @@
-// src/i18n/translations.js
-
 export const resources = {
   en: {
     translation: {
-      // Nav
+      LevelUp: 'Level up your life ',
       dashboard: 'Dashboard',
       habits: 'Habits',
       calendar: 'Calendar',
@@ -13,8 +11,6 @@ export const resources = {
       profile: 'Profile',
       logout: 'Logout',
       leaderboard: 'Leaderboard',
-
-      // Auth
       login: 'Login',
       register: 'Register',
       email: 'Email',
@@ -26,8 +22,7 @@ export const resources = {
       haveAccount: 'Already have an account?',
       welcomeBack: 'Welcome back!',
       joinHabitQuest: 'Join HabitQuest',
-
-      // Habits
+      forgotPassword: 'Forgot password?',
       myHabits: 'My Habits',
       addHabit: 'Add Habit',
       editHabit: 'Edit Habit',
@@ -42,7 +37,7 @@ export const resources = {
       xpReward: 'XP Reward',
       color: 'Color',
       icon: 'Icon',
-      save: 'Save',
+      save: 'Save Changes',
       cancel: 'Cancel',
       delete: 'Delete',
       completedToday: 'Completed today!',
@@ -50,15 +45,13 @@ export const resources = {
       streak: 'Streak',
       days: 'days',
       noHabits: 'No habits yet. Create your first habit!',
-
-      // Proof
+      confirmDeleteHabit: 'Are you sure you want to delete this habit?',
       addProof: 'Add Proof',
       proofRequired: 'Proof is required to complete a habit',
       proofText: 'Write your proof',
       proofImage: 'Upload image proof',
       proofPlaceholder: 'Describe what you accomplished...',
-
-      // Dashboard
+      uploading: 'Uploading...',
       todayProgress: "Today's Progress",
       completed: 'Completed',
       remaining: 'Remaining',
@@ -66,15 +59,15 @@ export const resources = {
       xpToNext: 'XP to next level',
       weeklyOverview: 'Weekly Overview',
       topStreaks: 'Top Streaks',
-
-      // Calendar
+      welcomeUser: 'Hello, {{name}}!',
+      Completedaily: 'Complete habits daily to build streaks!',
       calendarView: 'Calendar View',
       allHabits: 'All Habits',
       completed_day: 'Completed',
       missed_day: 'Missed',
       no_data: 'No data',
-
-      // Shop
+      prevMonth: 'Previous Month',
+      nextMonth: 'Next Month',
       rewardShop: 'Reward Shop',
       yourXP: 'Your XP',
       purchase: 'Purchase',
@@ -83,8 +76,7 @@ export const resources = {
       xpCost: 'XP Cost',
       purchaseHistory: 'Purchase History',
       noPurchases: 'No purchases yet',
-
-      // Friends
+      confirmPurchase: 'Do you want to buy this item?',
       addFriend: 'Add Friend',
       friendRequests: 'Friend Requests',
       accept: 'Accept',
@@ -94,17 +86,28 @@ export const resources = {
       sendRequest: 'Send Request',
       requestSent: 'Request Sent',
       level: 'Level',
-
-      // Stats
+      friendsList: 'Friends List',
       completionRate: 'Completion Rate',
       thisWeek: 'This Week',
       thisMonth: 'This Month',
       today: 'Today',
       longestStreak: 'Longest Streak',
       totalCompleted: 'Total Completed',
-
-      // Misc
+      activityChart: 'Activity Chart',
+      errorGeneric: 'Something went wrong. Please try again.',
+      errorNotFound: 'Requested resource not found.',
+      errorUnauthorized: 'You need to login first.',
+      errorForbidden: 'You do not have permission for this.',
+      errorRequired: 'This field is required',
+      errorInvalidEmail: 'Please enter a valid email address',
+      errorPasswordShort: 'Password must be at least 6 characters',
+      successCreated: 'Created successfully!',
+      successUpdated: 'Updated successfully!',
+      successDeleted: 'Deleted successfully!',
+      successSaved: 'Progress saved!',
+      levelUp: 'LEVEL UP!',
       categories: {
+        all: 'All',
         fitness: 'Fitness',
         health: 'Health',
         education: 'Education',
@@ -114,6 +117,8 @@ export const resources = {
         creative: 'Creative',
         finance: 'Finance',
         general: 'General',
+        sport: 'Sport',
+        work: 'Work'
       },
       language: 'Language',
       theme: 'Theme',
@@ -125,12 +130,165 @@ export const resources = {
       changePassword: 'Change Password',
       currentPassword: 'Current Password',
       newPassword: 'New Password',
-      update: 'Update',
-    },
+      update: 'Update Profile',
+      loading: 'Loading...',
+      noNotifications: 'No new notifications',
+      bot: {
+        title: 'Support Bot',
+        placeholder: 'Type a message...',
+        welcome: 'Hello! Any questions about the site?',
+        default: "I don't quite understand. Try asking about XP or the Shop.",
+        answers: {
+          hello: "Hi! I'm your assistant. How can I help?",
+          xp: "XP can be earned by completing habits. Spend it in the shop!",
+          shop: "The shop has cool skins and boosts. Check it out!"
+        }
+      },
+      items: {
+        coffee: { name: 'Coffee Boost', desc: '+100 energy' },
+        stickers: { name: 'Sticker Pack', desc: 'Cool HQ stickers' },
+        aura: { name: 'Legend Skin', desc: 'Profile glow effect' },
+        vip: { name: 'VIP Status', desc: 'Golden badge next to your name' },
+        boost: { name: '2X Booster', desc: 'Double XP for 24 hours' },
+        theme: { name: 'Cyber Theme', desc: 'Neon purple UI skin' },
+        box: { name: 'Mystery Box', desc: 'Win a rare reward or lose it all!' }
+      },
+      dashboard_page: {
+        greetings: {
+          morning: '🌅 Good morning',
+          afternoon: '☀️ Good afternoon',
+          evening: '🌙 Good evening'
+        },
+        totalXP: 'total XP',
+        totalHabits: 'Total Habits',
+        active: 'Active',
+        chartEmpty: 'Complete habits to see your chart!',
+        todaysHabits: "Today's Habits",
+        viewAll: 'View all',
+        levels: {
+          novice: 'Novice', apprentice: 'Apprentice', explorer: 'Explorer', seeker: 'Seeker', 
+          achiever: 'Achiever', champion: 'Champion', master: 'Master', grandMaster: 'Grand Master', 
+          legend: 'Legend', mythic: 'Mythic'
+        }
+      },
+      habits_page: {
+        completedTodayCount: 'completed today',
+        all: 'All',
+        startTracking: 'Add habits to start tracking your progress',
+        deleteConfirm: 'Are you sure you want to delete',
+        cannotBeUndone: 'This action cannot be undone.'
+      },  
+
+      calendar_page: {
+  activeHabits: 'active habits tracked',
+  perfectDays: 'Perfect Days',
+  partialDays: 'Partial Days',
+  missedDays: 'Missed Days',
+  habitsCompleted: 'habits completed',
+  noData: 'No habit data for this day.',
+  done: 'Done',
+  missed: 'Missed',
+  weekdays: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+  months: ['January','February','March','April','May','June','July','August','September','October','November','December'],
+  legend: {
+    all: 'All completed',
+    partial: 'Partial',
+    missed: 'Missed',
+    noData: 'No data'
+  }
+},
+friends_page: {
+  friend: 'Friend',
+  sent: 'Sent',
+  wantsToBeFriend: 'Wants to be your friend',
+  noRequests: 'No pending requests',
+  noRequestsSub: 'No one has sent you a friend request yet.',
+  searchSub: 'Search for users above to add them as friends!',
+},
+leaderboard_page: {
+  subtitle: 'Top habit builders this month',
+  yourRanking: 'Your ranking',
+  youAreRank: "You're #{{rank}} on the leaderboard!",
+  you: '(You)',
+  xpBalance: 'XP • Lvl {{level}}'
+},
+profile_page: {
+  successUpdate: 'Profile updated!',
+  errorUpdate: 'Update failed',
+  successPassword: 'Password changed successfully!',
+  errorPassword: 'Failed to change password',
+  bioPlaceholder: 'Tell others about yourself...',
+  experienceLevel: 'Experience & Level',
+  totalXp: 'XP total',
+},
+stats_page: {
+  subtitle: 'Your habit performance overview',
+  totalHabits: 'Total Habits',
+  activeHabits: 'Active habits',
+  weeklyRate: 'Weekly Rate',
+  chartCompleted: 'Completed',
+  chartTotal: 'Total'
+},
+auth_page: {
+  journeyTitle: 'Your journey starts here.',
+  journeySub: 'Join thousands of users building life-changing habits every day.',
+  features: {
+    streaks: 'Streak tracking',
+    stats: 'Progress stats',
+    leaderboard: 'Leaderboard',
+    languages: '3 languages'
+  },
+  passHint: 'Minimum 6 characters',
+  errorReg: 'Registration failed'
+},
+habit_card: {
+  daysLeft: 'd left',
+  tapToUpload: 'Tap to upload photo',
+  failed: 'Failed',
+  levelUpMsg: 'LEVEL UP!',
+},
+habitName: 'Habit Name',
+description: 'Description',
+category: 'Category',
+frequency: 'Frequency',
+daily: 'Daily',
+weekly: 'Weekly',
+deadline: 'Deadline',
+xpReward: 'XP Reward',
+icon: 'Icon',
+color: 'Color',
+save: 'Save Changes',
+cancel: 'Cancel',
+loading: 'Loading...',
+form: {
+  namePlaceholder: 'e.g. Morning Meditation',
+  descPlaceholder: 'Why is this habit important?',
+},
+categories: {
+  all: 'All',
+  fitness: 'Fitness',
+  health: 'Health',
+  education: 'Education',
+  mindfulness: 'Mindfulness',
+  productivity: 'Productivity',
+  social: 'Social',
+  creative: 'Creative',
+  finance: 'Finance',
+  general: 'General',
+  sport: 'Sport',
+  work: 'Work'
+},
+layout: {
+  slogan: 'Level up your life ✨',
+  themeHint: 'Smooth visual mode',
+  profileHint: 'Lvl {{level}} · {{xp}} XP',
+},
+    }
   },
 
   ru: {
     translation: {
+      LevelUp: 'Улучши свою жизнь',
       dashboard: 'Панель',
       habits: 'Привычки',
       calendar: 'Календарь',
@@ -140,7 +298,6 @@ export const resources = {
       profile: 'Профиль',
       logout: 'Выйти',
       leaderboard: 'Рейтинг',
-
       login: 'Войти',
       register: 'Регистрация',
       email: 'Эл. почта',
@@ -152,7 +309,7 @@ export const resources = {
       haveAccount: 'Уже есть аккаунт?',
       welcomeBack: 'С возвращением!',
       joinHabitQuest: 'Присоединиться к HabitQuest',
-
+      forgotPassword: 'Забыли пароль?',
       myHabits: 'Мои привычки',
       addHabit: 'Добавить привычку',
       editHabit: 'Редактировать',
@@ -167,7 +324,7 @@ export const resources = {
       xpReward: 'Награда XP',
       color: 'Цвет',
       icon: 'Иконка',
-      save: 'Сохранить',
+      save: 'Сохранить изменения',
       cancel: 'Отмена',
       delete: 'Удалить',
       completedToday: 'Выполнено сегодня!',
@@ -175,13 +332,13 @@ export const resources = {
       streak: 'Серия',
       days: 'дней',
       noHabits: 'Привычек пока нет. Создайте первую!',
-
+      confirmDeleteHabit: 'Вы уверены, что хотите удалить эту привычку?',
       addProof: 'Добавить доказательство',
       proofRequired: 'Необходимо доказательство',
       proofText: 'Написать доказательство',
       proofImage: 'Загрузить изображение',
       proofPlaceholder: 'Опишите, что вы сделали...',
-
+      uploading: 'Загрузка...',
       todayProgress: 'Прогресс сегодня',
       completed: 'Выполнено',
       remaining: 'Осталось',
@@ -189,13 +346,15 @@ export const resources = {
       xpToNext: 'XP до след. уровня',
       weeklyOverview: 'Обзор недели',
       topStreaks: 'Лучшие серии',
-
+      welcomeUser: 'Привет, {{name}}!',
+      Completedaily: 'Выполняй привычки ежедневно, чтобы накапливать серии!',
       calendarView: 'Вид календаря',
       allHabits: 'Все привычки',
       completed_day: 'Выполнено',
       missed_day: 'Пропущено',
       no_data: 'Нет данных',
-
+      prevMonth: 'Предыдущий месяц',
+      nextMonth: 'Следующий месяц',
       rewardShop: 'Магазин наград',
       yourXP: 'Ваш XP',
       purchase: 'Купить',
@@ -204,7 +363,7 @@ export const resources = {
       xpCost: 'Стоимость XP',
       purchaseHistory: 'История покупок',
       noPurchases: 'Покупок пока нет',
-
+      confirmPurchase: 'Вы хотите купить этот предмет?',
       addFriend: 'Добавить друга',
       friendRequests: 'Запросы в друзья',
       accept: 'Принять',
@@ -214,15 +373,28 @@ export const resources = {
       sendRequest: 'Отправить запрос',
       requestSent: 'Запрос отправлен',
       level: 'Уровень',
-
+      friendsList: 'Список друзей',
       completionRate: 'Выполняемость',
       thisWeek: 'На этой неделе',
       thisMonth: 'В этом месяце',
       today: 'Сегодня',
       longestStreak: 'Лучшая серия',
       totalCompleted: 'Всего выполнено',
-
+      activityChart: 'График активности',
+      errorGeneric: 'Что-то пошло не так. Попробуйте еще раз.',
+      errorNotFound: 'Ресурс не найден.',
+      errorUnauthorized: 'Вам нужно войти в аккаунт.',
+      errorForbidden: 'У вас нет прав доступа.',
+      errorRequired: 'Это поле обязательно',
+      errorInvalidEmail: 'Введите корректный email',
+      errorPasswordShort: 'Пароль должен быть не менее 6 символов',
+      successCreated: 'Успешно создано!',
+      successUpdated: 'Успешно обновлено!',
+      successDeleted: 'Успешно удалено!',
+      successSaved: 'Прогресс сохранен!',
+      levelUp: 'НОВЫЙ УРОВЕНЬ!',
       categories: {
+        all: 'Все',
         fitness: 'Фитнес',
         health: 'Здоровье',
         education: 'Образование',
@@ -232,6 +404,8 @@ export const resources = {
         creative: 'Творчество',
         finance: 'Финансы',
         general: 'Общее',
+        sport: 'Спорт',
+        work: 'Работа'
       },
       language: 'Язык',
       theme: 'Тема',
@@ -243,12 +417,164 @@ export const resources = {
       changePassword: 'Изменить пароль',
       currentPassword: 'Текущий пароль',
       newPassword: 'Новый пароль',
-      update: 'Обновить',
-    },
+      update: 'Обновить профиль',
+      loading: 'Загрузка...',
+      noNotifications: 'Нет новых уведомлений',
+      bot: {
+        title: 'Поддержка',
+        placeholder: 'Напишите сообщение...',
+        welcome: 'Привет! Есть вопросы по сайту?',
+        default: 'Я тебя не совсем понял. Попробуй спросить про XP или Магазин.',
+        answers: {
+          hello: 'Привет! Я бот-помощник. Чем могу помочь?',
+          xp: 'XP можно заработать за привычки. Трать их в магазине!',
+          shop: 'В магазине много крутых штук. Загляни туда!'
+        }
+      },
+      items: {
+        coffee: { name: 'Кофейный буст', desc: '+100 энергии' },
+        stickers: { name: 'Пак стикеров', desc: 'Крутые HQ стикеры' },
+        aura: { name: 'Легендарный скин', desc: 'Эффект свечения профиля' },
+        vip: { name: 'VIP статус', desc: 'Золотая иконка рядом с именем' },
+        boost: { name: 'Бустер 2X', desc: 'Двойной опыт на 24 часа' },
+        theme: { name: 'Кибер-тема', desc: 'Неоново-фиолетовый интерфейс' },
+        box: { name: 'Таинственный ящик', desc: 'Выиграй редкий приз или потеряй всё!' }
+      },
+      dashboard_page: {
+        greetings: {
+          morning: '🌅 Доброе утро',
+          afternoon: '☀️ Добрый день',
+          evening: '🌙 Добрый вечер'
+        },
+        totalXP: 'всего XP',
+        totalHabits: 'Всего привычек',
+        active: 'Активно',
+        chartEmpty: 'Выполняйте привычки, чтобы увидеть график!',
+        todaysHabits: 'Привычки на сегодня',
+        viewAll: 'Смотреть все',
+        levels: {
+          novice: 'Новичок', apprentice: 'Ученик', explorer: 'Исследователь', seeker: 'Искатель', 
+          achiever: 'Достигатор', champion: 'Чемпион', master: 'Мастер', grandMaster: 'Гранд-мастер', 
+          legend: 'Легенда', mythic: 'Мифический'
+        }
+      },
+      habits_page: {
+        completedTodayCount: 'выполнено сегодня',
+        all: 'Все',
+        startTracking: 'Добавьте привычки, чтобы начать отслеживать прогресс',
+        deleteConfirm: 'Вы уверены, что хотите удалить',
+        cannotBeUndone: 'Это действие нельзя отменить.'
+      },
+      calendar_page: {
+  activeHabits: 'активных привычек отслеживается',
+  perfectDays: 'Идеальные дни',
+  partialDays: 'Частичные дни',
+  missedDays: 'Пропущенные дни',
+  habitsCompleted: 'привычек выполнено',
+  noData: 'Нет данных о привычках за этот день.',
+  done: 'Готово',
+  missed: 'Пропущено',
+  weekdays: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
+  months: ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'],
+  legend: {
+    all: 'Все выполнено',
+    partial: 'Частично',
+    missed: 'Пропущено',
+    noData: 'Нет данных'
+  }
+},
+friends_page: {
+  friend: 'Друг',
+  sent: 'Отправлено',
+  wantsToBeFriend: 'Хочет в друзья',
+  noRequests: 'Нет новых запросов',
+  noRequestsSub: 'Никто еще не присылал вам запросов в друзья.',
+  searchSub: 'Ищите пользователей выше, чтобы добавить их в друзья!',
+},
+leaderboard_page: {
+  subtitle: 'Лучшие по привычкам в этом месяце',
+  yourRanking: 'Ваш рейтинг',
+  youAreRank: 'Вы на #{{rank}} месте в рейтинге!',
+  you: '(Вы)',
+  xpBalance: 'XP • Ур {{level}}'
+},
+profile_page: {
+  successUpdate: 'Профиль обновлен!',
+  errorUpdate: 'Ошибка обновления',
+  successPassword: 'Пароль успешно изменен!',
+  errorPassword: 'Не удалось изменить пароль',
+  bioPlaceholder: 'Расскажите о себе...',
+  experienceLevel: 'Опыт и Уровень',
+  totalXp: 'всего XP',
+},
+stats_page: {
+  subtitle: 'Обзор вашей продуктивности',
+  totalHabits: 'Всего привычек',
+  activeHabits: 'Активные привычки',
+  weeklyRate: 'Процент за неделю',
+  chartCompleted: 'Выполнено',
+  chartTotal: 'Всего'
+},
+auth_page: {
+  journeyTitle: 'Твой путь начинается здесь.',
+  journeySub: 'Присоединяйся к тысячам пользователей, меняющих жизнь к лучшему.',
+  features: {
+    streaks: 'Трекинг серий',
+    stats: 'Статистика прогресса',
+    leaderboard: 'Лидерборд',
+    languages: '3 языка'
+  },
+  passHint: 'Минимум 6 символов',
+  errorReg: 'Ошибка регистрации'
+},
+habit_card: {
+  daysLeft: 'дн. осталось',
+  tapToUpload: 'Нажмите, чтобы загрузить фото',
+  failed: 'Ошибка',
+  levelUpMsg: 'НОВЫЙ УРОВЕНЬ!',
+},
+habitName: 'Название привычки',
+description: 'Описание',
+category: 'Категория',
+frequency: 'Частота',
+daily: 'Ежедневно',
+weekly: 'Еженедельно',
+deadline: 'Срок (дедлайн)',
+xpReward: 'Награда XP',
+icon: 'Иконка',
+color: 'Цвет',
+save: 'Сохранить изменения',
+cancel: 'Отмена',
+loading: 'Загрузка...',
+form: {
+  namePlaceholder: 'Например: Утренняя медитация',
+  descPlaceholder: 'Почему эта привычка важна для вас?',
+},
+categories: {
+  all: 'Все',
+  fitness: 'Фитнес',
+  health: 'Здоровье',
+  education: 'Образование',
+  mindfulness: 'Осознанность',
+  productivity: 'Продуктивность',
+  social: 'Социальное',
+  creative: 'Творчество',
+  finance: 'Финансы',
+  general: 'Общее',
+  sport: 'Спорт',
+  work: 'Работа'
+},
+layout: {
+  slogan: 'Прокачай свою жизнь ✨',
+  themeHint: 'Мягкий визуальный режим',
+  profileHint: 'Ур {{level}} · {{xp}} XP',
+},
+    }
   },
 
   kk: {
     translation: {
+      LevelUp: 'Өз өміріңді басқар ',
       dashboard: 'Басқару тақтасы',
       habits: 'Әдеттер',
       calendar: 'Күнтізбе',
@@ -258,7 +584,6 @@ export const resources = {
       profile: 'Профиль',
       logout: 'Шығу',
       leaderboard: 'Рейтинг',
-
       login: 'Кіру',
       register: 'Тіркелу',
       email: 'Эл. пошта',
@@ -270,7 +595,7 @@ export const resources = {
       haveAccount: 'Аккаунт бар ма?',
       welcomeBack: 'Қош келдіңіз!',
       joinHabitQuest: 'HabitQuest-ке қосылу',
-
+      forgotPassword: 'Құпия сөзді ұмыттыңыз ба?',
       myHabits: 'Менің әдеттерім',
       addHabit: 'Әдет қосу',
       editHabit: 'Өңдеу',
@@ -285,7 +610,7 @@ export const resources = {
       xpReward: 'XP сыйақы',
       color: 'Түс',
       icon: 'Белгіше',
-      save: 'Сақтау',
+      save: 'Өзгерістерді сақтау',
       cancel: 'Болдырмау',
       delete: 'Жою',
       completedToday: 'Бүгін орындалды!',
@@ -293,13 +618,13 @@ export const resources = {
       streak: 'Сериялар',
       days: 'күн',
       noHabits: 'Әдет жоқ. Бірінші әдетіңізді жасаңыз!',
-
+      confirmDeleteHabit: 'Бұл әдетті жойғыңыз келетініне сенімдісіз бе?',
       addProof: 'Дәлел қосу',
       proofRequired: 'Дәлел қажет',
       proofText: 'Дәлел жазу',
       proofImage: 'Сурет жүктеу',
       proofPlaceholder: 'Не жасағаныңызды сипаттаңыз...',
-
+      uploading: 'Жүктелуде...',
       todayProgress: 'Бүгінгі прогресс',
       completed: 'Орындалды',
       remaining: 'Қалды',
@@ -307,13 +632,15 @@ export const resources = {
       xpToNext: 'Келесі деңгейге XP',
       weeklyOverview: 'Апталық шолу',
       topStreaks: 'Үздік сериялар',
-
+      welcomeUser: 'Сәлем, {{name}}!',
       calendarView: 'Күнтізбе',
       allHabits: 'Барлық әдеттер',
       completed_day: 'Орындалды',
       missed_day: 'Өткізіп алды',
       no_data: 'Деректер жоқ',
-
+      prevMonth: 'Өткен ай',
+      nextMonth: 'Келесі ай',
+      Completedaily: 'Күн сайын әдеттерді орындап, серияны арттыр!',
       rewardShop: 'Сыйақы дүкені',
       yourXP: 'Сіздің XP',
       purchase: 'Сатып алу',
@@ -322,25 +649,38 @@ export const resources = {
       xpCost: 'XP құны',
       purchaseHistory: 'Сатып алу тарихы',
       noPurchases: 'Сатып алулар жоқ',
-
+      confirmPurchase: 'Бұл затты сатып алғыңыз келе ме?',
       addFriend: 'Дос қосу',
       friendRequests: 'Дос сұраулары',
-      accept: 'Қабылдау',
+      accept: 'Қабылау',
       decline: 'Бас тарту',
       searchUsers: 'Пайдаланушыларды іздеу...',
       noFriends: 'Достар жоқ',
       sendRequest: 'Сұрау жіберу',
       requestSent: 'Сұрау жіберілді',
       level: 'Деңгей',
-
+      friendsList: 'Достар тізімі',
       completionRate: 'Орындалу деңгейі',
       thisWeek: 'Осы аптада',
       thisMonth: 'Осы айда',
       today: 'Бүгін',
       longestStreak: 'Ең ұзын серия',
       totalCompleted: 'Барлығы орындалды',
-
+      activityChart: 'Белсенділік кестесі',
+      errorGeneric: 'Бірдеңе дұрыс болмады. Қайталап көріңіз.',
+      errorNotFound: 'Ресурс табылмады.',
+      errorUnauthorized: 'Алдымен жүйеге кіру керек.',
+      errorForbidden: 'Сізде рұқсат жоқ.',
+      errorRequired: 'Бұл өріс міндетті',
+      errorInvalidEmail: 'Дұрыс email енгізіңіз',
+      errorPasswordShort: 'Құпия сөз кемінде 6 таңбадан тұруы керек',
+      successCreated: 'Сәтті жасалды!',
+      successUpdated: 'Сәтті жаңартылды!',
+      successDeleted: 'Сәтті жойылды!',
+      successSaved: 'Прогресс сақталды!',
+      levelUp: 'ЖАҢА ДЕҢГЕЙ!',
       categories: {
+        all: 'Барлығы',
         fitness: 'Фитнес',
         health: 'Денсаулық',
         education: 'Білім',
@@ -350,6 +690,8 @@ export const resources = {
         creative: 'Шығармашылық',
         finance: 'Қаржы',
         general: 'Жалпы',
+        sport: 'Спорт',
+        work: 'Жұмыс'
       },
       language: 'Тіл',
       theme: 'Тақырып',
@@ -361,7 +703,158 @@ export const resources = {
       changePassword: 'Құпия сөзді өзгерту',
       currentPassword: 'Ағымдағы құпия сөз',
       newPassword: 'Жаңа құпия сөз',
-      update: 'Жаңарту',
-    },
+      update: 'Профильді жаңарту',
+      loading: 'Жүктелуде...',
+      noNotifications: 'Жаңа хабарландырулар жоқ',
+      bot: {
+        title: 'Қолдау көрсету',
+        placeholder: 'Хабарлама жазыңыз...',
+        welcome: 'Сәлем! Сайт бойынша сұрақтарыңыз бар ма?',
+        default: 'Мен сізді түсінбедім. XP немесе Дүкен туралы сұрап көріңіз.',
+        answers: {
+          hello: 'Сәлем! Мен көмекші ботпын. Қалай көмектесе аламын?',
+          xp: 'XP-ны әдеттерді орындау арқылы жинауға болады. Оны дүкенде жұмсаңыз!',
+          shop: 'Дүкенде керемет заттар бар. Соған кіріп көріңіз!'
+        }
+      },
+      items: {
+        coffee: { name: 'Кофе буст', desc: '+100 энергия' },
+        stickers: { name: 'Стикерлер жинағы', desc: 'Керемет HQ стикерлері' },
+        aura: { name: 'Аңыз терісі', desc: 'Профильдің жарқырау эффектісі' },
+        vip: { name: 'VIP мәртебесі', desc: 'Есіміңіздің жанындағы алтын белгі' },
+        boost: { name: '2X Бустер', desc: '24 сағатқа екі есе XP' },
+        theme: { name: 'Кибер тақырып', desc: 'Неонды күлгін интерфейс' },
+        box: { name: 'Жұмбақ қорап', desc: 'Сирек сыйлықты ұтып ал немесе бәрін жоғалт!' }
+      },
+      dashboard_page: {
+        greetings: {
+          morning: '🌅 Қайырлы таң',
+          afternoon: '☀️ Қайырлы күн',
+          evening: '🌙 Кеш жарық'
+        },
+        totalXP: 'жалпы XP',
+        totalHabits: 'Барлық әдеттер',
+        active: 'Белсенді',
+        chartEmpty: 'Графикті көру үшін әдеттерді орындаңыз!',
+        todaysHabits: 'Бүгінгі әдеттер',
+        viewAll: 'Бәрін көру',
+        levels: {
+          novice: 'Жаңадан бастаушы', apprentice: 'Шәкірт', explorer: 'Зерттеуші', seeker: 'Іздеуші', 
+          achiever: 'Жетістікке жетуші', champion: 'Чемпион', master: 'Шебер', grandMaster: 'Гранд-шебер', 
+          legend: 'Аңыз', mythic: 'Мифтік'
+        }
+      },
+      habits_page: {
+        completedTodayCount: 'бүгін орындалды',
+        all: 'Барлығы',
+        startTracking: 'Прогресті бақылауды бастау үшін әдеттер қосыңыз',
+        deleteConfirm: 'Жоюға сенімдісіз бе?',
+        cannotBeUndone: 'Бұл әрекетті болдырмау мүмкін емес.'
+      },
+      calendar_page: {
+  activeHabits: 'белсенді әдет бақылануда',
+  perfectDays: 'Кемел күндер',
+  partialDays: 'Жартылай күндер',
+  missedDays: 'Өткізіп алған күндер',
+  habitsCompleted: 'әдет орындалды',
+  noData: 'Бұл күнге әдеттер туралы деректер жоқ.',
+  done: 'Дайын',
+  missed: 'Өткізілді',
+  weekdays: ['Жс', 'Дс', 'Сс', 'Ср', 'Бс', 'Жм', 'Сб'],
+  months: ['Қаңтар','Ақпан','Наурыз','Сәуір','Мамыр','Маусым','Шілде','Тамыз','Қыркүйек','Қазан','Қараша','Желтоқсан'],
+  legend: {
+    all: 'Бәрі орындалды',
+    partial: 'Жартылай',
+    missed: 'Өткізілді',
+    noData: 'Деректер жоқ'
+  }
+},
+friends_page: {
+  friend: 'Дос',
+  sent: 'Жіберілді',
+  wantsToBeFriend: 'Дос болғысы келеді',
+  noRequests: 'Жаңа сұраулар жоқ',
+  noRequestsSub: 'Сізге ешкім дос болуға сұрау жіберген жоқ.',
+  searchSub: 'Достар қосу үшін жоғарыдан пайдаланушыларды іздеңіз!',
+},
+leaderboard_page: {
+  subtitle: 'Осы айдағы үздік әдет қалыптастырушылар',
+  yourRanking: 'Сіздің рейтингіңіз',
+  youAreRank: 'Сіз рейтингте #{{rank}} орындасыз!',
+  you: '(Сіз)',
+  xpBalance: 'XP • Деңгей {{level}}'
+},
+profile_page: {
+  successUpdate: 'Профиль жаңартылды!',
+  errorUpdate: 'Жаңарту қатесі',
+  successPassword: 'Құпия сөз сәтті өзгертілді!',
+  errorPassword: 'Құпия сөзді өзгерту мүмкін болмады',
+  bioPlaceholder: 'Өзіңіз туралы айтып беріңіз...',
+  experienceLevel: 'Тәжірибе және Деңгей',
+  totalXp: 'жалпы XP',
+},
+stats_page: {
+  subtitle: 'Сіздің өнімділігіңізге шолу',
+  totalHabits: 'Барлық әдеттер',
+  activeHabits: 'Белсенді әдеттер',
+  weeklyRate: 'Апталық көрсеткіш',
+  chartCompleted: 'Орындалды',
+  chartTotal: 'Барлығы'
+},
+auth_page: {
+  journeyTitle: 'Сенің жолың осы жерден басталады.',
+  journeySub: 'Күн сайын өмірін өзгертетін мыңдаған пайдаланушыларға қосылыңыз.',
+  features: {
+    streaks: 'Серияларды бақылау',
+    stats: 'Прогресс статистикасы',
+    leaderboard: 'Рейтинг',
+    languages: '3 тіл'
   },
+  passHint: 'Кемінде 6 таңба',
+  errorReg: 'Тіркелу қатесі'
+},
+habit_card: {
+  daysLeft: 'күн қалды',
+  tapToUpload: 'Фото жүктеу үшін басыңыз',
+  failed: 'Қате',
+  levelUpMsg: 'ЖАҢА ДЕҢГЕЙ!',
+},
+habitName: 'Әдет атауы',
+description: 'Сипаттама',
+category: 'Санат',
+frequency: 'Жиілік',
+daily: 'Күнделікті',
+weekly: 'Апта сайын',
+deadline: 'Мерзімі (дедлайн)',
+xpReward: 'XP сыйақысы',
+icon: 'Белгіше',
+color: 'Түс',
+save: 'Өзгерістерді сақтау',
+cancel: 'Болдырмау',
+loading: 'Жүктелуде...',
+form: {
+  namePlaceholder: 'Мысалы: Таңғы медитация',
+  descPlaceholder: 'Бұл әдет сіз үшін неліктен маңызды?',
+},
+categories: {
+  all: 'Барлығы',
+  fitness: 'Фитнес',
+  health: 'Денсаулық',
+  education: 'Білім',
+  mindfulness: 'Зейін',
+  productivity: 'Өнімділік',
+  social: 'Әлеуметтік',
+  creative: 'Шығармашылық',
+  finance: 'Қаржы',
+  general: 'Жалпы',
+  sport: 'Спорт',
+  work: 'Жұмыс'
+},
+layout: {
+  slogan: 'Өз өміріңді жақсарт ✨',
+  themeHint: 'Ыңғайлы визуалды режим',
+  profileHint: 'Деңгей {{level}} · {{xp}} XP',
+},
+    }
+  }
 };

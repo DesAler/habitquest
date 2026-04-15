@@ -1,41 +1,48 @@
-const { Reward } = require('./models');
+const { Reward, sequelize } = require('./models');
 
 const seedRewards = async () => {
   try {
-    // 🧹 ШАГ 1: Полностью очищаем витрину перед новым завозом
-    await Reward.destroy({ where: {} });
-    console.log('🧹 Старые товары удалены.');
+    await sequelize.authenticate();
+    console.log('✅ DB connected');
 
-    // 📦 ШАГ 2: Завозим новые товары
+    await Reward.destroy({ where: {} });
+    console.log('🧹 Old rewards removed');
+
+    const API_URL = process.env.API_URL || 'https://habitquest-fhyd.onrender.com';
+
     const items = [
-      { 
-        name: 'HQ Sticker Pack', 
-        description: 'Эксклюзивные стикеры от HQ', 
-        xp_cost: 150, 
-        category: 'stickers',
-        image: 'http://localhost:5000/uploads/sticker.jpeg' 
+      {
+        name: 'HQ Sticker Pack',
+        description: 'Эксклюзивные стикеры от HQ',
+        xp_cost: 150,
+        category: 'general',
+        image: `${API_URL}/uploads/sticker.jpeg`,
       },
-      { 
-        name: 'SDU Legend Skin', 
-        description: 'Особый стиль профиля', 
-        xp_cost: 1000, 
-        category: 'visual',
-        image: 'http://localhost:5000/uploads/aura.jpeg' 
+      {
+        name: 'SDU Legend Skin',
+        description: 'Особый стиль профиля',
+        xp_cost: 1000,
+        category: 'general',
+        image: `${API_URL}/uploads/aura.jpeg`,
       },
-      { 
-        name: 'Coffee Boost', 
-        description: 'Энергия для новых привычек', 
-        xp_cost: 300, 
-        category: 'powerup',
-        image: 'http://localhost:5000/uploads/coffee.jpeg' 
-      }
+      {
+        name: 'Coffee Boost',
+        description: 'Энергия для новых привычек',
+        xp_cost: 300,
+        category: 'general',
+        image: `${API_URL}/uploads/coffee.jpeg`,
+      },
     ];
-    
+
     await Reward.bulkCreate(items);
-    console.log('✅ Магазин успешно заряжен товарами!');
-    process.exit();
+    console.log('✅ Rewards seeded successfully');
+
+    const rewards = await Reward.findAll();
+    console.log('📦 Current rewards count:', rewards.length);
+
+    process.exit(0);
   } catch (error) {
-    console.error('❌ Ошибка:', error);
+    console.error('❌ Seed error:', error);
     process.exit(1);
   }
 };

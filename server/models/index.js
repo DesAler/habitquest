@@ -3,17 +3,28 @@ const path = require('path');
 
 const sequelize = new Sequelize({
   dialect: 'sqlite',
-  storage: process.env.DATABASE_PATH || path.join(__dirname, '../database.sqlite'),
+  // FIX: Resolve path relative to this file, not process.cwd()
+  storage: process.env.DATABASE_PATH
+    ? path.resolve(process.env.DATABASE_PATH)
+    : path.join(__dirname, '../../database.sqlite'),
   logging: false,
 });
 
-// Import models
-const User = require('./User')(sequelize);
-const Habit = require('./Habit')(sequelize);
-const HabitLog = require('./HabitLog')(sequelize);
-const Reward = require('./Reward')(sequelize);
-const Purchase = require('./Purchase')(sequelize);
-const Friend = require('./Friend')(sequelize);
+// Import model factories
+const UserFactory = require('./User');
+const HabitFactory = require('./Habit');
+const HabitLogFactory = require('./HabitLog');
+const RewardFactory = require('./Reward');
+const PurchaseFactory = require('./Purchase');
+const FriendFactory = require('./Friend');
+
+// Initialize models (FIX: ensure all are called as functions)
+const User = UserFactory(sequelize);
+const Habit = HabitFactory(sequelize);
+const HabitLog = HabitLogFactory(sequelize);
+const Reward = RewardFactory(sequelize);
+const Purchase = PurchaseFactory(sequelize);
+const Friend = FriendFactory(sequelize);
 
 // Associations
 User.hasMany(Habit, { foreignKey: 'user_id', as: 'habits' });

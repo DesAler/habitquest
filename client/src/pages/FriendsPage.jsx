@@ -15,11 +15,14 @@ export default function FriendsPage() {
   const [tab, setTab] = useState('friends');
   const searchRef = useRef(null);
 
+  // Список ключей уровней (как на Dashboard)
+  const LEVEL_KEYS = ['novice','apprentice','explorer','seeker','achiever','champion','master','grandMaster','legend','mythic'];
+
   const load = async () => {
     try {
       const [fRes, rRes] = await Promise.all([socialAPI.getFriends(), socialAPI.getRequests()]);
-      setFriends(fRes.data.friends);
-      setRequests(rRes.data.requests);
+      setFriends(fRes.data.friends || []);
+      setRequests(rRes.data.requests || []);
     } catch (e) { console.error(e); }
     finally { setLoading(false); }
   };
@@ -32,7 +35,7 @@ export default function FriendsPage() {
       setSearching(true);
       try {
         const { data } = await socialAPI.search(searchQ);
-        setSearchResults(data.users);
+        setSearchResults(data.users || []);
       } catch (e) { console.error(e); }
       finally { setSearching(false); }
     }, 400);
@@ -53,11 +56,9 @@ export default function FriendsPage() {
     } catch (e) { console.error(e); }
   };
 
-  const LEVEL_TITLES = ['Novice','Apprentice','Explorer','Seeker','Achiever'];
-
   return (
     <div className="space-y-6">
-      <PageHeader title={t('friends')} subtitle={`${friends.length} friends`} />
+      <PageHeader title={t('friends')} subtitle={`${friends.length} ${t('friends').toLowerCase()}`} />
 
       {/* Search */}
       <div className="card p-5">
@@ -83,12 +84,12 @@ export default function FriendsPage() {
                   <Avatar user={u} size="sm" />
                   <div className="flex-1 min-w-0">
                     <p className="font-medium text-sm text-slate-900 dark:text-white">{u.username}</p>
-                    <p className="text-xs text-slate-400">Level {u.level} • {u.xp} XP</p>
+                    <p className="text-xs text-slate-400">{t('level')} {u.level} • {u.xp} XP</p>
                   </div>
                   {alreadyFriend ? (
-                    <span className="text-xs text-green-500 font-medium">✓ Friend</span>
+                    <span className="text-xs text-green-500 font-medium">✓ {t('friends_page.friend')}</span>
                   ) : sent ? (
-                    <span className="text-xs text-slate-400 font-medium">Sent ✓</span>
+                    <span className="text-xs text-slate-400 font-medium">{t('friends_page.sent')} ✓</span>
                   ) : (
                     <button onClick={() => sendRequest(u.id)} className="btn-primary text-xs py-1.5 px-3">
                       {t('sendRequest')}
@@ -117,34 +118,37 @@ export default function FriendsPage() {
         <div className="flex justify-center py-12"><Spinner size="lg" /></div>
       ) : tab === 'friends' ? (
         friends.length === 0 ? (
-          <EmptyState icon="👥" title={t('noFriends')} subtitle="Search for users above to add them as friends!" />
+          <EmptyState icon="👥" title={t('noFriends')} subtitle={t('friends_page.searchSub')} />
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {friends.map(f => (
-              <div key={f.id} className="card p-5 flex flex-col items-center text-center">
-                <Avatar user={f} size="lg" />
-                <h3 className="font-display font-semibold text-slate-900 dark:text-white mt-3">{f.username}</h3>
-                <p className="text-xs text-slate-400 mt-0.5">
-                  {LEVEL_TITLES[Math.min((f.level||1)-1,4)]} • Level {f.level}
-                </p>
-                {f.bio && <p className="text-xs text-slate-500 dark:text-slate-400 mt-2 line-clamp-2">{f.bio}</p>}
-                <div className="flex gap-3 mt-3 w-full">
-                  <div className="flex-1 bg-slate-50 dark:bg-slate-800 rounded-xl p-2 text-center">
-                    <p className="font-bold text-brand-600 dark:text-brand-400 text-sm">{f.xp}</p>
-                    <p className="text-xs text-slate-400">XP</p>
-                  </div>
-                  <div className="flex-1 bg-slate-50 dark:bg-slate-800 rounded-xl p-2 text-center">
-                    <p className="font-bold text-brand-600 dark:text-brand-400 text-sm">{f.level}</p>
-                    <p className="text-xs text-slate-400">Level</p>
+            {friends.map(f => {
+              const lvlKey = LEVEL_KEYS[Math.min((f.level || 1) - 1, LEVEL_KEYS.length - 1)];
+              return (
+                <div key={f.id} className="card p-5 flex flex-col items-center text-center">
+                  <Avatar user={f} size="lg" />
+                  <h3 className="font-display font-semibold text-slate-900 dark:text-white mt-3">{f.username}</h3>
+                  <p className="text-xs text-slate-400 mt-0.5">
+                    {t(`dashboard_page.levels.${lvlKey}`)} • {t('level')} {f.level}
+                  </p>
+                  {f.bio && <p className="text-xs text-slate-500 dark:text-slate-400 mt-2 line-clamp-2">{f.bio}</p>}
+                  <div className="flex gap-3 mt-3 w-full">
+                    <div className="flex-1 bg-slate-50 dark:bg-slate-800 rounded-xl p-2 text-center">
+                      <p className="font-bold text-brand-600 dark:text-brand-400 text-sm">{f.xp}</p>
+                      <p className="text-xs text-slate-400 uppercase">XP</p>
+                    </div>
+                    <div className="flex-1 bg-slate-50 dark:bg-slate-800 rounded-xl p-2 text-center">
+                      <p className="font-bold text-brand-600 dark:text-brand-400 text-sm">{f.level}</p>
+                      <p className="text-xs text-slate-400 uppercase">{t('level')}</p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )
       ) : (
         requests.length === 0 ? (
-          <EmptyState icon="📬" title="No pending requests" subtitle="No one has sent you a friend request yet." />
+          <EmptyState icon="📬" title={t('friends_page.noRequests')} subtitle={t('friends_page.noRequestsSub')} />
         ) : (
           <div className="space-y-3">
             {requests.map(r => (
@@ -152,7 +156,7 @@ export default function FriendsPage() {
                 <Avatar user={r.sender} />
                 <div className="flex-1 min-w-0">
                   <p className="font-semibold text-slate-900 dark:text-white">{r.sender?.username}</p>
-                  <p className="text-xs text-slate-400">Level {r.sender?.level} • Wants to be your friend</p>
+                  <p className="text-xs text-slate-400">{t('level')} {r.sender?.level} • {t('friends_page.wantsToBeFriend')}</p>
                 </div>
                 <div className="flex gap-2 flex-shrink-0">
                   <button onClick={() => respondRequest(r.id, 'decline')} className="btn-secondary text-sm py-1.5 px-3">

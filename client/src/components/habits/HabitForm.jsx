@@ -34,25 +34,43 @@ export default function HabitForm({ habit, onSubmit, onCancel, loading }) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
+      {/* Название */}
       <div>
         <label className="label">{t('habitName')} *</label>
-        <input className="input" placeholder="e.g. Morning Meditation"
-          value={form.name} onChange={e => set('name', e.target.value)} required />
+        <input 
+          className="input" 
+          placeholder={t('form.namePlaceholder')} 
+          value={form.name} 
+          onChange={e => set('name', e.target.value)} 
+          required 
+        />
       </div>
 
+      {/* Описание */}
       <div>
         <label className="label">{t('description')}</label>
-        <textarea className="input resize-none" rows={2} placeholder="Optional description..."
-          value={form.description} onChange={e => set('description', e.target.value)} />
+        <textarea 
+          className="input resize-none" 
+          rows={2} 
+          placeholder={t('form.descPlaceholder')}
+          value={form.description} 
+          onChange={e => set('description', e.target.value)} 
+        />
       </div>
 
       <div className="grid grid-cols-2 gap-4">
+        {/* Категория */}
         <div>
           <label className="label">{t('category')} *</label>
           <select className="input" value={form.category} onChange={e => set('category', e.target.value)}>
-            {CATEGORIES.map(c => <option key={c} value={c}>{t(`categories.${c}`)}</option>)}
+            {CATEGORIES.map(c => (
+              <option key={c} value={c}>
+                {t(`categories.${c}`)}
+              </option>
+            ))}
           </select>
         </div>
+        {/* Частота */}
         <div>
           <label className="label">{t('frequency')}</label>
           <select className="input" value={form.frequency} onChange={e => set('frequency', e.target.value)}>
@@ -63,10 +81,12 @@ export default function HabitForm({ habit, onSubmit, onCancel, loading }) {
       </div>
 
       <div className="grid grid-cols-2 gap-4">
+        {/* Дедлайн */}
         <div>
           <label className="label">{t('deadline')}</label>
           <input type="date" className="input" value={form.deadline} onChange={e => set('deadline', e.target.value)} />
         </div>
+        {/* Награда */}
         <div>
           <label className="label">{t('xpReward')}</label>
           <input type="number" className="input" min={5} max={100} step={5}
@@ -74,6 +94,7 @@ export default function HabitForm({ habit, onSubmit, onCancel, loading }) {
         </div>
       </div>
 
+      {/* Иконка */}
       <div>
         <label className="label">{t('icon')}</label>
         <div className="flex flex-wrap gap-2 p-3 bg-slate-50 dark:bg-slate-800 rounded-xl">
@@ -81,29 +102,33 @@ export default function HabitForm({ habit, onSubmit, onCancel, loading }) {
             <button key={icon} type="button"
               onClick={() => set('icon', icon)}
               className={`w-9 h-9 rounded-lg flex items-center justify-center text-xl transition-all
-                ${form.icon === icon ? 'bg-brand-500 ring-2 ring-brand-500 ring-offset-1' : 'hover:bg-slate-200 dark:hover:bg-slate-700'}`}>
+                ${form.icon === icon ? 'bg-brand-500 ring-2 ring-brand-500 ring-offset-1 text-white shadow-lg' : 'hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-400'}`}>
               {icon}
             </button>
           ))}
         </div>
       </div>
 
+      {/* Цвет */}
       <div>
         <label className="label">{t('color')}</label>
-        <div className="flex gap-2">
+        <div className="flex gap-2 flex-wrap">
           {COLORS.map(c => (
             <button key={c} type="button"
               onClick={() => set('color', c)}
-              className={`w-8 h-8 rounded-full transition-all ${form.color === c ? 'ring-2 ring-offset-2 ring-slate-400 scale-110' : ''}`}
+              className={`w-8 h-8 rounded-full transition-all ${form.color === c ? 'ring-2 ring-offset-2 ring-slate-400 scale-110 shadow-md' : 'opacity-70 hover:opacity-100'}`}
               style={{ backgroundColor: c }} />
           ))}
         </div>
       </div>
 
-      <div className="flex gap-3 pt-2">
-        <button type="button" onClick={onCancel} className="btn-secondary flex-1">{t('cancel')}</button>
-        <button type="submit" disabled={loading} className="btn-primary flex-1">
-          {loading ? '...' : t('save')}
+      {/* Кнопки */}
+      <div className="flex gap-3 pt-4">
+        <button type="button" onClick={onCancel} className="btn-secondary flex-1 py-3 font-bold">
+          {t('cancel')}
+        </button>
+        <button type="submit" disabled={loading} className="btn-primary flex-1 py-3 font-bold shadow-lg shadow-brand-500/20">
+          {loading ? t('loading') : t('save')}
         </button>
       </div>
     </form>

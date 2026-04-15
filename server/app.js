@@ -2,10 +2,10 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const fs = require('fs');
 const { sequelize } = require('./models');
 const { startCronJobs } = require('./services/cronService');
 
-// Routes
 const authRoutes = require('./routes/auth');
 const habitRoutes = require('./routes/habits');
 const logRoutes = require('./routes/logs');
@@ -13,21 +13,34 @@ const rewardRoutes = require('./routes/rewards');
 const socialRoutes = require('./routes/social');
 const statsRoutes = require('./routes/stats');
 const userRoutes = require('./routes/users');
-const aiRoutes = require('./routes/ai');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Middleware
+// FIX: Allow multiple origins and handle preflight
+const allowedOrigins = [
+  process.env.CLIENT_URL || 'http://localhost:3000',
+  'http://localhost:3000',
+  'http://127.0.0.1:3000',
+];
 app.use(cors({
-  origin: process.env.CLIENT_URL || 'http://localhost:3000',
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) return callback(null, true);
+    callback(new Error('Not allowed by CORS'));
+  },
   credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
 }));
+app.options('*', cors()); // Handle preflight
+
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// Static file serving for uploads
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+// Ensure uploads directory exists
+const uploadsDir = path.join(__dirname, 'uploads');
+if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir, { recursive: true });
+app.use('/uploads', express.static(uploadsDir));
 
 // API Routes
 app.use('/api/auth', authRoutes);
@@ -37,54 +50,24 @@ app.use('/api/rewards', rewardRoutes);
 app.use('/api/social', socialRoutes);
 app.use('/api/stats', statsRoutes);
 app.use('/api/users', userRoutes);
-app.use('/api/users', userRoutes);
-app.use('/api/ai', aiRoutes); 
 
-// Health check
-app.get('/api/health', (req, res) => {
-  res.json({ status: 'OK', timestamp: new Date().toISOString() });
-});
+app.get('/api/health', (req, res) => res.json({ status: 'OK', timestamp: new Date().toISOString() }));
 
 // Global error handler
 app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(err.status || 500).json({
-    error: err.message || 'Internal Server Error',
-  });
+  console.error('Global error:', err.message);
+  res.status(err.status || 500).json({ error: err.message || 'Internal Server Error' });
 });
 
-
-// Initialize DB and start server
 const startServer = async () => {
   try {
     await sequelize.authenticate();
     console.log('✅ Database connected');
-    await sequelize.sync();
-    // АВТО-ЗАПОЛНЕНИЕ МАГАЗИНА
-    const { Reward } = require('./models');
-    const rewardCount = await Reward.count();
-    if (rewardCount === 0) {
-      await Reward.bulkCreate([
-        { name: 'HQ Stickers', description: 'Эксклюзивные стикеры', xp_cost: 150, category: 'stickers', image: 'https://github.com/DesAler/habitquest/issues/3#issue-4269118167' },
-        { name: 'SDU Legend Skin', description: 'Особый стиль профиля', xp_cost: 1000, category: 'visual', image: 'https://github.com/DesAler/habitquest/issues/1#issue-4269110069' },
-        { name: 'Coffee Boost', description: 'Энергия для привычек', xp_cost: 300, category: 'powerup', image: 'https://github.com/DesAler/habitquest/issues/2#issue-4269114235' }
-      ]);
-      console.log('✅ Магазин авто-заполнен!');
-
-    }
+    // FIX: Use force:false to never drop tables, alter:false for safety
+    await sequelize.sync({ force: false });
     console.log('✅ Database synced');
-
-    // Create uploads directory
-    const fs = require('fs');
-    const uploadsDir = path.join(__dirname, 'uploads');
-    if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir, { recursive: true });
-
     startCronJobs();
-    console.log('✅ Cron jobs started');
-
-    app.listen(PORT, () => {
-      console.log(`🚀 HabitQuest Server running on port ${PORT}`);
-    });
+    app.listen(PORT, () => console.log(`🚀 HabitQuest Server running on http://localhost:${PORT}`));
   } catch (error) {
     console.error('❌ Failed to start server:', error);
     process.exit(1);

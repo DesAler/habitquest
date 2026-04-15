@@ -3,9 +3,6 @@ import { useTranslation } from 'react-i18next';
 import { logsAPI } from '../services/api';
 import { PageHeader, Spinner } from '../components/ui';
 
-const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-
 export default function CalendarPage() {
   const { t } = useTranslation();
   const [date, setDate] = useState(new Date());
@@ -13,6 +10,10 @@ export default function CalendarPage() {
   const [habitCount, setHabitCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState(null);
+
+  // Получаем локализованные массивы
+  const WEEKDAYS = t('calendar_page.weekdays', { returnObjects: true });
+  const MONTHS = t('calendar_page.months', { returnObjects: true });
 
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
@@ -58,22 +59,21 @@ export default function CalendarPage() {
 
   const selectedData = selected ? calData[selected] : null;
 
-  // Summary stats
   const completedDays = Object.values(calData).filter(d => d.completed >= d.total && d.total > 0).length;
   const missedDays = Object.values(calData).filter(d => d.completed === 0 && d.total > 0).length;
   const partialDays = Object.values(calData).filter(d => d.completed > 0 && d.completed < d.total).length;
 
   return (
     <div className="space-y-6">
-      <PageHeader title={t('calendarView')} subtitle={`${habitCount} active habits tracked`} />
+      <PageHeader title={t('calendarView')} subtitle={`${habitCount} ${t('calendar_page.activeHabits')}`} />
 
       {/* Legend */}
       <div className="flex gap-4 flex-wrap">
         {[
-          { color: 'bg-green-100 border-green-200 text-green-700', label: 'All completed' },
-          { color: 'bg-yellow-100 border-yellow-200 text-yellow-700', label: 'Partial' },
-          { color: 'bg-red-100 border-red-200 text-red-700', label: 'Missed' },
-          { color: 'bg-white border-slate-200 text-slate-500', label: 'No data' },
+          { color: 'bg-green-100 border-green-200 text-green-700', label: t('calendar_page.legend.all') },
+          { color: 'bg-yellow-100 border-yellow-200 text-yellow-700', label: t('calendar_page.legend.partial') },
+          { color: 'bg-red-100 border-red-200 text-red-700', label: t('calendar_page.legend.missed') },
+          { color: 'bg-white border-slate-200 text-slate-500', label: t('calendar_page.legend.noData') },
         ].map(l => (
           <div key={l.label} className="flex items-center gap-2">
             <div className={`w-4 h-4 rounded border ${l.color}`} />
@@ -86,15 +86,15 @@ export default function CalendarPage() {
       <div className="grid grid-cols-3 gap-4">
         <div className="card p-4 text-center">
           <div className="text-2xl font-display font-bold text-green-500">{completedDays}</div>
-          <div className="text-xs text-slate-500 mt-1">Perfect Days</div>
+          <div className="text-xs text-slate-500 mt-1">{t('calendar_page.perfectDays')}</div>
         </div>
         <div className="card p-4 text-center">
           <div className="text-2xl font-display font-bold text-yellow-500">{partialDays}</div>
-          <div className="text-xs text-slate-500 mt-1">Partial Days</div>
+          <div className="text-xs text-slate-500 mt-1">{t('calendar_page.partialDays')}</div>
         </div>
         <div className="card p-4 text-center">
           <div className="text-2xl font-display font-bold text-red-400">{missedDays}</div>
-          <div className="text-xs text-slate-500 mt-1">Missed Days</div>
+          <div className="text-xs text-slate-500 mt-1">{t('calendar_page.missedDays')}</div>
         </div>
       </div>
 
@@ -126,10 +126,8 @@ export default function CalendarPage() {
           <div className="flex justify-center py-16"><Spinner /></div>
         ) : (
           <div className="grid grid-cols-7 gap-1.5">
-            {/* Empty cells for first week */}
             {[...Array(firstDay)].map((_, i) => <div key={`empty-${i}`} />)}
 
-            {/* Day cells */}
             {[...Array(daysInMonth)].map((_, i) => {
               const day = i + 1;
               const dateStr = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
@@ -163,7 +161,7 @@ export default function CalendarPage() {
       {selected && selectedData && (
         <div className="card p-5 animate-slide-up">
           <h3 className="font-display font-semibold text-slate-900 dark:text-white mb-3">
-            📅 {selected} — {selectedData.completed}/{selectedData.total} habits completed
+            📅 {selected} — {selectedData.completed}/{selectedData.total} {t('calendar_page.habitsCompleted')}
           </h3>
           {selectedData.logs?.length > 0 ? (
             <div className="space-y-2">
@@ -177,13 +175,13 @@ export default function CalendarPage() {
                     )}
                   </div>
                   <span className={`text-xs font-medium ${log.completed ? 'text-green-600' : 'text-red-500'}`}>
-                    {log.completed ? '✓ Done' : '✗ Missed'}
+                    {log.completed ? `✓ ${t('calendar_page.done')}` : `✗ ${t('calendar_page.missed')}`}
                   </span>
                 </div>
               ))}
             </div>
           ) : (
-            <p className="text-slate-400 text-sm">No habit data for this day.</p>
+            <p className="text-slate-400 text-sm">{t('calendar_page.noData')}</p>
           )}
         </div>
       )}

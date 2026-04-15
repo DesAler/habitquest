@@ -13,6 +13,7 @@ import ShopPage from './pages/ShopPage';
 import FriendsPage from './pages/FriendsPage';
 import ProfilePage from './pages/ProfilePage';
 import LeaderboardPage from './pages/LeaderboardPage';
+import { SimpleChatBot } from './components/SimpleChatBot'; // Твой импорт бота
 
 const PrivateRoute = ({ children }) => {
   const { user, loading } = useAuth();
@@ -33,7 +34,6 @@ const PublicRoute = ({ children }) => {
   return user ? <Navigate to="/" replace /> : children;
 };
 
-// ВЫНЕСЛИ РОУТЫ В ОТДЕЛЬНЫЙ КОМПОНЕНТ ДЛЯ АНИМАЦИИ
 function AnimatedRoutes() {
   const location = useLocation();
   useTheme(); 
@@ -59,12 +59,19 @@ function AnimatedRoutes() {
   );
 }
 
+// ГЛАВНЫЙ ИСПРАВЛЕННЫЙ КОМПОНЕНТ
 export default function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
-        <AnimatedRoutes />
+        <div className="relative min-h-screen">
+          <AnimatedRoutes />
+          
+          {/* БОТ ТУТ — ОН ТЕПЕРЬ ВИДЕН НА ВСЕХ СТРАНИЦАХ */}
+          <SimpleChatBot />
+        </div>
       </BrowserRouter>
     </AuthProvider>
   );
 }
+
