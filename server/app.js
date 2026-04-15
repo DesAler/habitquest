@@ -60,6 +60,18 @@ const startServer = async () => {
     await sequelize.authenticate();
     console.log('✅ Database connected');
     await sequelize.sync();
+    // АВТО-ЗАПОЛНЕНИЕ МАГАЗИНА
+    const { Reward } = require('./models');
+    const rewardCount = await Reward.count();
+    if (rewardCount === 0) {
+      await Reward.bulkCreate([
+        { name: 'HQ Stickers', description: 'Эксклюзивные стикеры', xp_cost: 150, category: 'stickers', image: 'https://placehold.co/400x300/6366f1/white?text=Stickers' },
+        { name: 'SDU Legend Skin', description: 'Особый стиль профиля', xp_cost: 1000, category: 'visual', image: 'https://placehold.co/400x300/fbbf24/white?text=SDU+Skin' },
+        { name: 'Coffee Boost', description: 'Энергия для привычек', xp_cost: 300, category: 'powerup', image: 'https://placehold.co/400x300/ef4444/white?text=Coffee' }
+      ]);
+      console.log('✅ Магазин авто-заполнен!');
+
+    }
     console.log('✅ Database synced');
 
     // Create uploads directory

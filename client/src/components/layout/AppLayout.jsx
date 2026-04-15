@@ -59,7 +59,7 @@ export default function AppLayout() {
       // Берем текущий язык сайта из локального хранилища (или ставим 'ru' по умолчанию)
       const currentLang = localStorage.getItem('hq_language') || 'ru'; 
 
-      const res = await fetch('https://habitquest-fhyd.onrender.com', {
+      const res = await fetch('https://habitquest-fhyd.onrender.com/api/ai/chat', {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
@@ -161,6 +161,18 @@ export default function AppLayout() {
       <aside className={`hidden md:flex flex-col flex-shrink-0 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 transition-all duration-300 ${collapsed ? 'w-16' : 'w-60'}`}>
         <SidebarContent />
       </aside>
+
+      {/* --- ВЫЕЗЖАЮЩЕЕ МОБИЛЬНОЕ МЕНЮ --- */}
+      {mobileOpen && (
+        <div className="fixed inset-0 z-[100] md:hidden">
+          {/* Темный фон */}
+          <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onClick={() => setMobileOpen(false)}></div>
+          {/* Сама панель */}
+          <aside className="absolute top-0 left-0 w-64 h-full bg-white dark:bg-slate-900 shadow-2xl flex flex-col transition-transform animate-in slide-in-from-left-4">
+            <SidebarContent />
+          </aside>
+        </div>
+      )}
 
       <div className="flex-1 flex flex-col overflow-hidden">
         <header className="md:hidden flex items-center gap-3 px-4 py-3 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800">
